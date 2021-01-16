@@ -14,7 +14,7 @@ git clone https://github.com/Akkkky/frankly-memo.git
 ```bash
 bundle install
 ```
-app.rb を実行。
+`app.rb` を実行。
 
 ```bash
 ruby app.rb
