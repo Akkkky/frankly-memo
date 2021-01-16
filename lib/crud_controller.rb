@@ -86,7 +86,7 @@ def edit_file(file_path, hash)
   end
 end
 
-def is_file_exist(id)
+def file_exist?(id)
   file_path = FILE_DIR.join("#{id}.json")
   File.exist?(file_path)
 end

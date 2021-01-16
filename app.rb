@@ -25,7 +25,7 @@ post '/compose' do
 end
 
 get '/note/:id' do
-  if is_file_exist(params[:id])
+  if file_exist?(params[:id])
     @note = read_note(params[:id])
     erb :show
   else
@@ -34,7 +34,7 @@ get '/note/:id' do
 end
 
 get '/edit/note/:id' do
-  if is_file_exist(params[:id])
+  if file_exist?(params[:id])
     @note = read_note(params[:id])
     erb :edit
   else
@@ -43,7 +43,7 @@ get '/edit/note/:id' do
 end
 
 patch '/note/:id' do
-  if is_file_exist(params[:id])
+  if file_exist?(params[:id])
     update_main(params[:id], params[:title], params[:body])
     @notes = read_main
     redirect to('/')
@@ -53,7 +53,7 @@ patch '/note/:id' do
 end
 
 delete '/note/:id' do
-  if is_file_exist(params[:id])
+  if file_exist?(params[:id])
     @note = read_note(params['id'])
     delete_file(params[:id])
     @notes = read_main
