@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/reloader'
 require 'pathname'
 require 'json'
 require 'etc'
-require './lib/crud_controller.rb'
+require './lib/crud_controller'
 
 enable :method_override
 
@@ -58,7 +60,7 @@ delete '/note/:id' do
     redirect to('/')
   else
     erb :not_found
-  end    
+  end
 end
 
 not_found do
