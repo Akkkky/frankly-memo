@@ -7,7 +7,7 @@ frankly-note は Sinatra 製のフランク:)なメモ帳アプリケーショ�
 ```bash
 mkdir my_note
 cd my_note
-git clone https://github.com/Akkkky/frankly-memo.git
+git clone https://github.com/Akkkky/frankly-note.git
 ```
 `bundle install` で Gem をインストール。
 
