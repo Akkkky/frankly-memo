@@ -1,5 +1,5 @@
-# frankly-memo
-frankly-memo は Sinatra 製のフランク:)なメモ帳アプリケーションです。
+# frankly-note
+frankly-note は Sinatra 製のフランク:)なメモ帳アプリケーションです。
 
 # 始め方
 任意の適当なディレクトリにこのアプリケーションを `git clone` してダウンロード
