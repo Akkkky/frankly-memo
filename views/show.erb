@@ -1,0 +1,21 @@
+<form action="/edit/note/<%= escape_processing(@note['id']) %>" method="post" class="note-input-form">
+  <div>
+    <label for="title">Title</label>
+    <p class="note-title"><%= escape_processing(@note['title']) %></p>
+  </div>
+  <div>
+    <label for="body">Body</label>
+    <textarea type="text" name="body" class="note-body note-body-readonly" readonly><%= escape_processing(@note['body']) %></textarea>
+  </div>
+  <div>
+    <input class="input-edit" type="submit" value="edit" />
+    <input type="hidden" value="get" id="_method" name="_method" />
+  </div>
+</form>
+
+<form action="/note/<%= @note['id'] %>" method="post" class="note-input-form">
+  <div>
+    <input class="input-delete" type="submit" value="delete" />
+    <input type="hidden" value="delete" id="_method" name="_method" />
+  </div>
+</form>

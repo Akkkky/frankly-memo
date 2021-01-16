@@ -1,0 +1,170 @@
+.wrapper {
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+  margin: 10px auto;
+  text-align: center;
+}
+
+.header {
+  text-align: center;
+}
+
+.header a {
+  display: block;
+  margin: 0 auto;
+  width: 60px;
+}
+
+.header img {
+  text-align: center;
+  margin: 0 auto;
+  width: 60px;
+}
+
+.header img:hover {
+  filter: alpha(opacity=80);
+  -moz-opacity: 0.8;
+  opacity: 0.8;
+}
+
+h1.logo {
+  text-align: center;
+  font-family: 'Permanent Marker';
+}
+
+a.logo {
+  display: block;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+}
+
+a.logo:hover {
+  opacity: 0.7;
+}
+
+.notes-list {
+  margin: 0 auto;
+  width: 45%;
+  max-width: 400px;
+  text-align: left;
+}
+
+.notes-list ul{
+  list-style: none;
+  padding: 0;
+}
+
+.notes-list li::before{
+  content: "";
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-image: url("/images/pen_and_memo_16px.png"); 
+  position: relative;
+  top: 4px;
+  margin-right: 5px;
+}
+
+.notes-list li{
+  border-bottom:2px solid rgba(124, 6, 141, 0.1);
+  margin-bottom: 8px;
+  padding: 3px 5px 3px 5px;
+  display: flex;
+}
+
+.notes-list li:hover {
+  opacity: 0.7;
+}
+
+.notes-list a{
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  color: black;
+}
+
+div.wrapping-form-div {
+  margin-top: 10px;
+}
+
+.note-input-form *{
+  display: block;
+  margin: 0 auto;
+  width: 45%;
+  max-width: 400px;
+  border-radius: 4px;
+}
+
+.note-input-form input {
+  width: 100%;
+  border: 2px solid rgb(124, 6, 141);
+}
+
+.note-input-form label {
+  padding: 3px;
+  font-family: 'Permanent Marker';
+}
+
+.note-input-form .title {
+  margin-bottom: 10px;
+}
+
+.note-input-form .note-title {
+  background-color: rgba(230, 230, 230, 0.1);
+}
+
+.note-input-form input[type="text"], textarea {
+  padding: 3px 5px 3px 5px;
+}
+
+.note-input-form .note-body {
+  width: 100%;
+  border: 2px solid rgb(124, 6, 141);
+  height: 300px;
+  margin-bottom: 15px;
+  background-color: rgba(230, 230, 230, 0.1);
+}
+
+.note-input-form input[type="submit"] {
+  width: 25%;
+  max-width: 200px;
+  cursor: pointer;
+  font-family: 'Permanent Marker';
+  background-color: rgba(124, 6, 141, 0.1);
+}
+
+.note-input-form input[type="submit"]:hover {
+  opacity: 0.7;
+}
+
+.input-edit {
+  position: relative;
+  margin: 0;
+  left: 18%;
+}
+
+.input-delete {
+  position: relative;
+  margin:0 18% 0 auto;
+  top: -30px;
+}
+
+.input-delete:hover {
+  color: red;
+  border: 2px solid red;
+  opacity: 0.7;
+}
+
+p.note-title, p.note-body, textarea.note-body-readonly{
+  width: 100%;
+  background-color: white !important;
+  border: 2px solid rgba(124, 6, 141, 0.1) !important;
+  text-align: left;
+  padding: 3px 5px 3px 5px;
+  pointer-events: none;
+}
