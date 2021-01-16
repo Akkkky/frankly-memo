@@ -9,9 +9,10 @@ mkdir my_note
 cd my_note
 git clone https://github.com/Akkkky/frankly-note.git
 ```
-`bundle install` で Gem をインストール。
+`frankly-note` ディレクトリに移動して `bundle install` で Gem をインストール。
 
 ```bash
+cd frankly-note
 bundle install
 ```
 `app.rb` を実行。
