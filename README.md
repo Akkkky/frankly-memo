@@ -25,3 +25,7 @@ ruby app.rb
 <img width="600px;" src="https://user-images.githubusercontent.com/6190966/104794311-1ae34d80-57ea-11eb-99bf-2650432468b4.png" />
 
 イェイ！
+
+# その他
+`Ruby 2.7.2` での動作を確認しています。
+エラーが発生するときは Ruby のバージョンを合わせてみてください。
