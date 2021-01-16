@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-require 'sinatra'
-require 'pathname'
-require 'json'
-require 'etc'
-require './lib/crud_controller'
-
 enable :method_override
 
 get '/' do
