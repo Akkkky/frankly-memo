@@ -14,7 +14,7 @@ def retrieve_json_file(file_path)
 
   files_paths.map do |path_name|
     File.open(path_name) do |json_file|
-      json_object = JSON.load(json_file)
+      json_object = JSON.parse(json_file.read)
       { 'id' => json_object['id'], 'title' => json_object['title'] }
     end
   end
@@ -45,7 +45,7 @@ end
 def read_note(id)
   file_path = FILE_DIR.join("#{id}.json")
   File.open(file_path) do |json_file|
-    JSON.load(json_file)
+    JSON.parse(json_file.read)
   end
 end
 
@@ -59,7 +59,7 @@ end
 
 def create_file(file_path, file_id, title, body)
   hash = { 'id' => file_id, 'title' => title, 'body' => body }
-  open(file_path, 'w') do |file|
+  File.open(file_path, 'w') do |file|
     JSON.dump(hash, file)
   end
 end
@@ -70,7 +70,7 @@ end
 
 def load_json_file(file_path)
   File.open(file_path) do |json_file|
-    JSON.load(json_file)
+    JSON.parse(json_file.read)
   end
 end
 
@@ -81,7 +81,7 @@ def update_main(file_id, title, body)
 end
 
 def edit_file(file_path, hash)
-  open(file_path, 'w') do |file|
+  File.open(file_path, 'w') do |file|
     JSON.dump(hash, file)
   end
 end
