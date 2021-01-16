@@ -1,0 +1,14 @@
+<form action="/note/<%= escape_processing(@note['id']) %>" method="post" class="note-input-form">
+  <div>
+    <label for="title">Title</label>
+    <input type="text" name="title" class="note-title" value="<%= escape_processing(@note['title']) %>" required />
+  </div>
+  <div>
+    <label for="body">Body</label>
+    <textarea type="text" name="body" class="note-body" required><%= escape_processing(@note['body']) %></textarea>
+  </div>
+  <div>
+    <input class="input-save" type="submit" value="save" />
+    <input type="hidden" value="patch" id="_method" name="_method" />
+  </div>
+</form>
