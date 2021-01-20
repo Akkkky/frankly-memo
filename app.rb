@@ -83,7 +83,7 @@ def to_ul(a_tags)
 end
 
 helpers do
-  def escape_processing(test)
-    Rack::Utils.escape_html(test)
+  def escape_processing(text)
+    Rack::Utils.escape_html(text)
   end
 end
