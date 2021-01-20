@@ -68,22 +68,22 @@ not_found do
   erb :not_found
 end
 
-def to_link(notes)
-  notes.map do |note|
-    "<a href='/note/#{note['id']}'>#{justify_title(note['title'])}</a>"
-  end
-end
-
-def to_ul(a_tags)
-  li_tags = a_tags.map do |atag|
-    "<li>#{atag}</li>"
-  end.join
-
-  "<ul>#{li_tags}</ul>"
-end
-
 helpers do
+  def to_link(notes)
+    notes.map do |note|
+      "<a href='/note/#{note['id']}'>#{justify_title(note['title'])}</a>"
+    end
+  end
+  
+  def to_ul(a_tags)
+    li_tags = a_tags.map do |atag|
+      "<li>#{atag}</li>"
+    end.join
+  
+    "<ul>#{li_tags}</ul>"
+  end
+  
   def escape_processing(text)
     Rack::Utils.escape_html(text)
-  end
+  end  
 end
