@@ -9,7 +9,9 @@ require './lib/crud_controller'
 enable :method_override
 
 get '/' do
-  @notes = read_main
+  notes = read_main
+  a_tags = to_link(sort_notes(notes))
+  @notes_in_ul_tag = to_ul(a_tags)
   erb :top
 end
 
@@ -64,6 +66,20 @@ end
 
 not_found do
   erb :not_found
+end
+
+def to_link(notes)
+  notes.map do |note|
+    "<a href='/note/#{note['id']}'>#{justify_title(note['title'])}</a>"
+  end
+end
+
+def to_ul(a_tags)
+  li_tags = a_tags.map do |atag|
+    "<li>#{atag}</li>"
+  end.join
+
+  "<ul>#{li_tags}</ul>"
 end
 
 helpers do

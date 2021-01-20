@@ -5,8 +5,6 @@ FILE_DIR = Pathname(__dir__).join('../public/notes')
 def read_main
   file_path = FILE_DIR.join('*.json')
   notes = retrieve_json_file(file_path)
-  a_tags = to_link(sort_notes(notes))
-  to_ul(a_tags)
 end
 
 def retrieve_json_file(file_path)
@@ -18,20 +16,6 @@ def retrieve_json_file(file_path)
       { 'id' => json_object['id'], 'title' => json_object['title'] }
     end
   end
-end
-
-def to_link(notes)
-  notes.map do |note|
-    "<a href='/note/#{note['id']}'>#{justify_title(note['title'])}</a>"
-  end
-end
-
-def to_ul(a_tags)
-  li_tags = a_tags.map do |atag|
-    "<li>#{atag}</li>"
-  end.join
-
-  "<ul>#{li_tags}</ul>"
 end
 
 def sort_notes(notes)

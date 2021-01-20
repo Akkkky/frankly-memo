@@ -11,6 +11,7 @@
 /tmp/
 .DS_Store
 .rubocop.yml
+public/notes/*.json
 
 # Used by dotenv library to load environment variables.
 # .env
