@@ -160,6 +160,10 @@ div.wrapping-form-div {
   opacity: 0.7;
 }
 
+p.note-title {
+  overflow: hidden;
+}
+
 p.note-title, p.note-body, textarea.note-body-readonly{
   width: 100%;
   background-color: white !important;
