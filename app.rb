@@ -71,15 +71,15 @@ end
 helpers do
   def to_link(notes)
     notes.map do |note|
-      "<a href='/note/#{note['id']}'>#{justify_title(note['title'])}</a>"
+      "<a href='/note/#{note['id']}'>#{justify_title(note['title'], 50)}</a>"
     end
   end
-  
+
   def to_ul(a_tags)
     li_tags = a_tags.map do |atag|
       "<li>#{atag}</li>"
     end.join
-  
+
     "<ul>#{li_tags}</ul>"
   end
 
