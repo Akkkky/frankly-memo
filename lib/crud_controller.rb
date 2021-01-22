@@ -28,7 +28,7 @@ def justify_title(title_string, max_byte_size)
     return_string.bytesize < max_byte_size ? return_string << string : break
   end
 
-  "#{return_string}..."
+  return_string.bytesize <= max_byte_size ? return_string : "#{return_string}..."
 end
 
 def read_note(id)

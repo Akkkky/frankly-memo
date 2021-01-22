@@ -71,7 +71,7 @@ end
 helpers do
   def to_link(notes)
     notes.map do |note|
-      "<a href='/note/#{note['id']}'>#{justify_title(note['title'], 50)}</a>"
+      "<a href='/note/#{note['id']}'>#{justify_title(note['title'], 46)}</a>"
     end
   end
 
