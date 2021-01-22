@@ -82,8 +82,8 @@ helpers do
   
     "<ul>#{li_tags}</ul>"
   end
-  
+
   def escape_processing(text)
     Rack::Utils.escape_html(text)
-  end  
+  end
 end
