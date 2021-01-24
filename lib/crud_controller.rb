@@ -13,7 +13,7 @@ def retrieve_json_file(file_path)
   files_paths.map do |path_name|
     File.open(path_name) do |json_file|
       json_object = JSON.parse(json_file.read)
-      { 'id' => escape_processing(json_object['id']), 'title' => escape_processing(json_object['title']) }
+      { 'id' => json_object['id'], 'title' => json_object['title'] }
     end
   end
 end
@@ -65,7 +65,7 @@ end
 
 def update_main(file_id, title, body)
   file_path = FILE_DIR.join("#{file_id}.json")
-  hash = { 'id' => file_id.to_i, 'title' => escape_processing(title), 'body' => escape_processing(body) }
+  hash = { 'id' => file_id.to_i, 'title' => title, 'body' => body }
   edit_file(file_path, hash)
 end
 

@@ -20,7 +20,7 @@ get '/compose' do
 end
 
 post '/compose' do
-  create_main(escape_processing(params[:title]), escape_processing(params[:body]))
+  create_main(params[:title], params[:body])
   @notes = read_main
   redirect to('/')
 end
@@ -71,7 +71,8 @@ end
 helpers do
   def to_link(notes)
     notes.map do |note|
-      "<a href='/note/#{note['id']}'>#{justify_title(note['title'], 46)}</a>"
+      title = justify_title(note['title'], 46)
+      "<a href='/note/#{note['id']}'>#{escape_html(title)}</a>"
     end
   end
 
@@ -83,7 +84,7 @@ helpers do
     "<ul>#{li_tags}</ul>"
   end
 
-  def escape_processing(text)
+  def escape_html(text)
     Rack::Utils.escape_html(text)
   end
 end
