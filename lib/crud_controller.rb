@@ -1,86 +1,91 @@
 # frozen_string_literal: true
 
-FILE_DIR = Pathname(__dir__).join('../public/notes')
+class CrudController
+  DB_NAME = 'sinatra_db'
+  TABLE_NAME = 'sinatra_table'
 
-def read_main
-  file_path = FILE_DIR.join('*.json')
-  retrieve_json_file(file_path)
-end
+  def initialize
+    @connection = PG.connect(dbname: DB_NAME)
+    create_table unless table_exist?
+  end
 
-def retrieve_json_file(file_path)
-  files_paths = Dir.glob(file_path)
+  def read_all_note
+    read_all_query = "SELECT * FROM #{TABLE_NAME}"
+    prepare_name = 'read_all_note'
+    delete_if_exist(prepare_name)
+    @connection.prepare(prepare_name, read_all_query)
+    results = @connection.exec_prepared(prepare_name).map { |result| result }
+    results.sort_by { |result| result.values_at('id') }.reverse
+  end
 
-  files_paths.map do |path_name|
-    File.open(path_name) do |json_file|
-      json_object = JSON.parse(json_file.read)
-      { 'id' => escape_processing(json_object['id']), 'title' => escape_processing(json_object['title']) }
+  def read_note(id)
+    read_note_query = "SELECT * FROM #{TABLE_NAME} WHERE id = $1"
+    prepare_name = 'read_note'
+    delete_if_exist(prepare_name)
+    @connection.prepare(prepare_name, read_note_query)
+    @connection.exec_prepared(prepare_name, [id]) { |result| result[0] }
+  end
+
+  def create_note(title, body)
+    create_note_query = "INSERT INTO #{TABLE_NAME} (title, body) VALUES ($1, $2) RETURNING id"
+    prepare_name = 'create_note'
+    delete_if_exist(prepare_name)
+    @connection.prepare(prepare_name, create_note_query)
+    @connection.exec_prepared(prepare_name, [title, body]) { |result| result[0]['id'] }
+  end
+
+  def update_note(id, title, body)
+    update_note_query = "UPDATE #{TABLE_NAME} SET (title, body) = ($2, $3) WHERE id = $1"
+    prepare_name = 'update_note'
+    delete_if_exist(prepare_name)
+    @connection.prepare(prepare_name, update_note_query)
+    @connection.exec_prepared(prepare_name, [id, title, body])
+  end
+
+  def delete_note(id)
+    delete_note_query = "DELETE FROM #{TABLE_NAME} WHERE id = $1"
+    prepare_name = 'delete_note'
+    delete_if_exist(prepare_name)
+    @connection.prepare(prepare_name, delete_note_query)
+    @connection.exec_prepared(prepare_name, [id])
+  end
+
+  def id_exist?(id)
+    if /^[0-9]+$/.match?(id)
+      exist_id_query = "SELECT * FROM #{TABLE_NAME} WHERE id = $1"
+      prepare_name = 'id_exist'
+      delete_if_exist(prepare_name)
+      @connection.prepare(prepare_name, exist_id_query)
+      @connection.exec_prepared(prepare_name, [id]).cmd_tuples == 1
+    else
+      false
     end
   end
-end
 
-def sort_notes(notes)
-  notes.sort_by { |note| note.values_at('id') }.reverse
-end
+  private
 
-def justify_title(title_string, max_byte_size)
-  return_string = +''
-  title_string.chars.each do |string|
-    return_string.bytesize < max_byte_size ? return_string << string : break
+  def prepare_exist?(prepare_name)
+    tuple = @connection.exec("SELECT * FROM pg_prepared_statements WHERE name='#{prepare_name}'").cmd_tuples
+    tuple.positive?
   end
 
-  return_string.bytesize <= title_string.bytesize - 3 ? "#{return_string}..." : return_string
-end
-
-def read_note(id)
-  file_path = FILE_DIR.join("#{id}.json")
-  File.open(file_path) do |json_file|
-    JSON.parse(json_file.read)
+  def delete_if_exist(prepare_name)
+    @connection.exec("DEALLOCATE #{prepare_name}") if prepare_exist?(prepare_name)
   end
-end
 
-def create_main(title, body)
-  file_id = create_id
-  file_path = FILE_DIR.join("#{file_id}.json")
-
-  create_file(file_path, file_id, title, body)
-  load_json_file(file_path)
-end
-
-def create_file(file_path, file_id, title, body)
-  hash = { 'id' => file_id, 'title' => title, 'body' => body }
-  File.open(file_path, 'w') do |file|
-    JSON.dump(hash, file)
+  def table_exist?
+    exist_table_query = "SELECT table_name FROM information_schema.tables WHERE table_name = '#{TABLE_NAME}'"
+    prepare_name = 'table_exist'
+    delete_if_exist(prepare_name)
+    @connection.prepare(prepare_name, exist_table_query)
+    @connection.exec_prepared(prepare_name).cmd_tuples == 1
   end
-end
 
-def create_id
-  Time.now.to_i
-end
-
-def load_json_file(file_path)
-  File.open(file_path) do |json_file|
-    JSON.parse(json_file.read)
+  def create_table
+    create_table_query = "CREATE TABLE #{TABLE_NAME} (id SERIAL, title TEXT NOT NULL, body TEXT)"
+    prepare_name = 'create_table'
+    delete_if_exist(prepare_name)
+    @connection.prepare(prepare_name, create_table_query)
+    @connection.exec_prepared(prepare_name)
   end
-end
-
-def update_main(file_id, title, body)
-  file_path = FILE_DIR.join("#{file_id}.json")
-  hash = { 'id' => file_id.to_i, 'title' => escape_processing(title), 'body' => escape_processing(body) }
-  edit_file(file_path, hash)
-end
-
-def edit_file(file_path, hash)
-  File.open(file_path, 'w') do |file|
-    JSON.dump(hash, file)
-  end
-end
-
-def file_exist?(id)
-  file_path = FILE_DIR.join("#{id}.json")
-  File.exist?(file_path)
-end
-
-def delete_file(id)
-  file_path = FILE_DIR.join("#{id}.json")
-  File.delete(file_path) if File.exist?(file_path)
 end

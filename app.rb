@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 require 'sinatra'
-require 'pathname'
-require 'json'
-require 'etc'
+require 'pg'
 require './lib/crud_controller'
 
 enable :method_override
 
+my_db = CrudController.new
+
 get '/' do
-  notes = read_main
-  a_tags = to_link(sort_notes(notes))
+  notes = my_db.read_all_note
+  a_tags = to_link(notes)
   @notes_in_ul_tag = to_ul(a_tags)
   erb :top
 end
@@ -20,14 +20,14 @@ get '/compose' do
 end
 
 post '/compose' do
-  create_main(escape_processing(params[:title]), escape_processing(params[:body]))
-  @notes = read_main
+  my_db.create_note(escape_processing(params[:title]), escape_processing(params[:body]))
+  @notes = my_db.read_all_note
   redirect to('/')
 end
 
 get '/note/:id' do
-  if file_exist?(params[:id])
-    @note = read_note(params[:id])
+  if my_db.id_exist?(params[:id])
+    @note = my_db.read_note(params[:id])
     erb :show
   else
     erb :not_found
@@ -35,8 +35,8 @@ get '/note/:id' do
 end
 
 get '/edit/note/:id' do
-  if file_exist?(params[:id])
-    @note = read_note(params[:id])
+  if my_db.id_exist?(params[:id])
+    @note = my_db.read_note(params[:id])
     erb :edit
   else
     erb :not_found
@@ -44,9 +44,9 @@ get '/edit/note/:id' do
 end
 
 patch '/note/:id' do
-  if file_exist?(params[:id])
-    update_main(params[:id], params[:title], params[:body])
-    @notes = read_main
+  if my_db.id_exist?(params[:id])
+    my_db.update_note(params[:id], escape_processing(params[:title]), escape_processing(params[:body]))
+    @notes = my_db.read_all_note
     redirect to('/')
   else
     erb :not_found
@@ -54,10 +54,9 @@ patch '/note/:id' do
 end
 
 delete '/note/:id' do
-  if file_exist?(params[:id])
-    @note = read_note(params['id'])
-    delete_file(params[:id])
-    @notes = read_main
+  if my_db.id_exist?(params[:id])
+    my_db.delete_note(params[:id])
+    @notes = my_db.read_all_note
     redirect to('/')
   else
     erb :not_found
@@ -71,7 +70,7 @@ end
 helpers do
   def to_link(notes)
     notes.map do |note|
-      "<a href='/note/#{note['id']}'>#{justify_title(note['title'], 46)}</a>"
+      "<a href='/note/#{note['id']}'>#{justify_title(note['title'], 40)}</a>"
     end
   end
 
@@ -81,6 +80,15 @@ helpers do
     end.join
 
     "<ul>#{li_tags}</ul>"
+  end
+
+  def justify_title(title_string, max_byte_size)
+    return_string = +''
+    title_string.chars.each do |string|
+      return_string.bytesize < max_byte_size ? return_string << string : break
+    end
+
+    return_string.bytesize <= title_string.bytesize - 3 ? "#{return_string}..." : return_string
   end
 
   def escape_processing(text)

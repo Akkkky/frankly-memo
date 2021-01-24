@@ -10,6 +10,7 @@ GEM
     parser (3.0.0.0)
       ast (~> 2.4.1)
     pathname (0.1.0)
+    pg (1.2.3)
     rack (2.2.3)
     rack-protection (2.1.0)
       rack
@@ -46,6 +47,8 @@ GEM
       rack-protection (= 2.1.0)
       sinatra (= 2.1.0)
       tilt (~> 2.0)
+    sinatra-reloader (1.0)
+      sinatra-contrib
     tilt (2.0.10)
     unicode-display_width (2.0.0)
 
@@ -55,9 +58,11 @@ PLATFORMS
 DEPENDENCIES
   json
   pathname
+  pg
   rubocop-fjord
   sinatra
   sinatra-contrib
+  sinatra-reloader
 
 BUNDLED WITH
    2.1.4
