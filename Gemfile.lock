@@ -2,14 +2,13 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.1)
-    json (2.5.1)
     multi_json (1.15.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     parallel (1.20.1)
     parser (3.0.0.0)
       ast (~> 2.4.1)
-    pathname (0.1.0)
+    pg (1.2.3)
     rack (2.2.3)
     rack-protection (2.1.0)
       rack
@@ -53,8 +52,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  json
-  pathname
+  pg
   rubocop-fjord
   sinatra
   sinatra-contrib
