@@ -12,14 +12,14 @@ get '/' do
   notes = my_db.read_all_note
   a_tags = to_link(notes)
   @notes_in_ul_tag = to_ul(a_tags)
-  erb :top
+  erb :index
 end
 
-get '/compose' do
+get '/composition' do
   erb :compose
 end
 
-post '/compose' do
+post '/composition' do
   my_db.create_note(params[:title], params[:body])
   @notes = my_db.read_all_note
   redirect to('/')
@@ -34,7 +34,7 @@ get '/note/:id' do
   end
 end
 
-get '/edit/note/:id' do
+get '/editing/note/:id' do
   if my_db.id_exist?(params[:id])
     @note = my_db.read_note(params[:id])
     erb :edit
