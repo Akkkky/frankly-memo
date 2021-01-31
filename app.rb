@@ -4,8 +4,6 @@ require 'sinatra'
 require 'pg'
 require './lib/crud_controller'
 
-enable :method_override
-
 my_db = CrudController.new
 
 get '/' do
