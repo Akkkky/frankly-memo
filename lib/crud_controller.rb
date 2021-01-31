@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
 class CrudController
-  DB_NAME = 'sinatra_db'
-  TABLE_NAME = 'sinatra_table'
-
-  def initialize
-    @connection = PG.connect(dbname: DB_NAME)
+  def initialize(db_name, table_name)
+    @connection = PG.connect(dbname: db_name)
+    @table_name = table_name
     create_table unless table_exist?
   end
 
   def read_all_note
-    read_all_query = "SELECT * FROM #{TABLE_NAME}"
+    read_all_query = "SELECT * FROM #{@table_name}"
     prepare_name = 'read_all_note'
     delete_if_exist(prepare_name)
     @connection.prepare(prepare_name, read_all_query)
@@ -19,7 +17,7 @@ class CrudController
   end
 
   def read_note(id)
-    read_note_query = "SELECT * FROM #{TABLE_NAME} WHERE id = $1"
+    read_note_query = "SELECT * FROM #{@table_name} WHERE id = $1"
     prepare_name = 'read_note'
     delete_if_exist(prepare_name)
     @connection.prepare(prepare_name, read_note_query)
@@ -27,7 +25,7 @@ class CrudController
   end
 
   def create_note(title, body)
-    create_note_query = "INSERT INTO #{TABLE_NAME} (title, body) VALUES ($1, $2) RETURNING id"
+    create_note_query = "INSERT INTO #{@table_name} (title, body) VALUES ($1, $2) RETURNING id"
     prepare_name = 'create_note'
     delete_if_exist(prepare_name)
     @connection.prepare(prepare_name, create_note_query)
@@ -35,7 +33,7 @@ class CrudController
   end
 
   def update_note(id, title, body)
-    update_note_query = "UPDATE #{TABLE_NAME} SET (title, body) = ($2, $3) WHERE id = $1"
+    update_note_query = "UPDATE #{@table_name} SET (title, body) = ($2, $3) WHERE id = $1"
     prepare_name = 'update_note'
     delete_if_exist(prepare_name)
     @connection.prepare(prepare_name, update_note_query)
@@ -43,7 +41,7 @@ class CrudController
   end
 
   def delete_note(id)
-    delete_note_query = "DELETE FROM #{TABLE_NAME} WHERE id = $1"
+    delete_note_query = "DELETE FROM #{@table_name} WHERE id = $1"
     prepare_name = 'delete_note'
     delete_if_exist(prepare_name)
     @connection.prepare(prepare_name, delete_note_query)
@@ -52,7 +50,7 @@ class CrudController
 
   def id_exist?(id)
     if /^[0-9]+$/.match?(id)
-      exist_id_query = "SELECT * FROM #{TABLE_NAME} WHERE id = $1"
+      exist_id_query = "SELECT * FROM #{@table_name} WHERE id = $1"
       prepare_name = 'id_exist'
       delete_if_exist(prepare_name)
       @connection.prepare(prepare_name, exist_id_query)
@@ -74,7 +72,7 @@ class CrudController
   end
 
   def table_exist?
-    exist_table_query = "SELECT table_name FROM information_schema.tables WHERE table_name = '#{TABLE_NAME}'"
+    exist_table_query = "SELECT table_name FROM information_schema.tables WHERE table_name = '#{@table_name}'"
     prepare_name = 'table_exist'
     delete_if_exist(prepare_name)
     @connection.prepare(prepare_name, exist_table_query)
@@ -82,7 +80,7 @@ class CrudController
   end
 
   def create_table
-    create_table_query = "CREATE TABLE #{TABLE_NAME} (id SERIAL, title TEXT NOT NULL, body TEXT)"
+    create_table_query = "CREATE TABLE #{@table_name} (id SERIAL, title TEXT NOT NULL, body TEXT)"
     prepare_name = 'create_table'
     delete_if_exist(prepare_name)
     @connection.prepare(prepare_name, create_table_query)

@@ -4,7 +4,7 @@ require 'sinatra'
 require 'pg'
 require './lib/crud_controller'
 
-my_db = CrudController.new
+my_db = CrudController.new('sinatra_db', 'sinatra_table')
 
 get '/' do
   notes = my_db.read_all_note
