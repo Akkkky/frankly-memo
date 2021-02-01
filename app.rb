@@ -17,7 +17,7 @@ get '/composition' do
   erb :compose
 end
 
-post '/composition' do
+post '/note' do
   my_db.create_note(params[:title], params[:body])
   @notes = my_db.read_all_note
   redirect to('/')
