@@ -2,7 +2,24 @@
 frankly-note は Sinatra 製のフランク:)なメモ帳アプリケーションです。
 
 # 始め方
-任意の適当なディレクトリにこのアプリケーションを `git clone` してダウンロード
+予め PostgreSQL のデフォルトのユーザーで `sinatra_db` というデータベースを作成しておいてください。
+
+PostgreSQL のインストールとデフォルトユーザーでのログイン。
+
+```bash
+brew install postgresql
+brew services start postgresql
+psql postgres
+```
+
+`sinatra_db` データベースを作成。
+
+```bash
+postgres=# create database sinatra_db;
+postgres=# \q
+```
+
+任意の適当なディレクトリにこのアプリケーションを `git clone` してダウンロード。
 
 ```bash
 mkdir my_note
